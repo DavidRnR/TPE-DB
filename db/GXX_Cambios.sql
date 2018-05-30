@@ -1,3 +1,11 @@
+-- ALTER TABLES
+
+-- Agregar la columna ciudad a Departamento
+ALTER TABLE GXX_Departamento
+    ADD COLUMN ciudad varchar(80) NOT NULL;
+
+-- RESTRICTIONS
+
 -- Que las fechas de las reservas sean consistentes, 
 -- es decir que la fecha de inicio de la reserva sea menor que la fecha de finalización.
 ALTER TABLE GXX_Reserva
@@ -6,6 +14,8 @@ ALTER TABLE GXX_Reserva
 -- Que el detalle de las habitaciones sea consistente con el tipo de departamento, 
 -- es decir que si el tipo de departamento es de 2 habitaciones, 
 -- en el detalle se consideren como máximo 2 habitaciones.
+
+/*
 CREATE ASSERTION CK_GXX_CANTIDAD_HABITACIONES
 CHECK NOT EXISTS
 (SELECT 1
@@ -14,8 +24,9 @@ CHECK NOT EXISTS
     WHERE t.cant_habitaciones > 
         (SELECT COUNT(*)
          FROM GXX_Habitacion h WHERE d.id_dpto = h.id_dpt);
+*/
 
-CREATE OR REPLACE FUNCTION FN_GXX_CK_CANTIDAD_HABITACIONES() RETURNS trigger
+CREATE OR REPLACE FUNCTION TRFN_GXX_CK_CANTIDAD_HABITACIONES() RETURNS trigger
 AS $$
 BEGIN
     IF(EXISTS (
@@ -33,19 +44,22 @@ END; $$ LANGUAGE plpgsql;
 
 
 CREATE TRIGGER TR_GXX_CK_CANTIDAD_HABITACIONES ON 
- 	 AFTER INSERT OR DELETE OF GXX_Habitacion FOR EACH ROW EXECUTE PROCEDURE FN_GXX_CK_CANTIDAD_HABITACIONES();
+ 	 AFTER INSERT OR DELETE OF GXX_Habitacion FOR EACH ROW EXECUTE PROCEDURE TRFN_GXX_CK_CANTIDAD_HABITACIONES();
 
 
 
 -- Que tanto la persona que realiza la reserva 
 -- como los huéspedes no sea el propietario del departamento.
+
+/*
 CREATE ASSERTION CK_GXX_PROPIETARIO
     CHECK NOT EXISTS (
         SELECT 1 FROM GXX_Departamento d
         JOIN GXX_Reserva r ON (d.tipo_doc = r.tipo_doc AND d.nro_doc = r.nro_doc);
 );
+*/
 
-CREATE OR REPLACE FUNCTION FN_GXX_CK_RESERVA () RETURNS trigger
+CREATE OR REPLACE FUNCTION TRFN_GXX_CK_RESERVA () RETURNS trigger
 AS $$
 BEGIN
     IF(EXISTS (
@@ -58,11 +72,13 @@ RETURN new;
 END; $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TR_GXX_CK_RESERVA ON 
- 	 AFTER INSERT OR UPDATE OF GXX_Reserva FOR EACH ROW EXECUTE PROCEDURE FN_GXX_CK_RESERVA();
+ 	 AFTER INSERT OR UPDATE OF GXX_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GXX_CK_RESERVA();
 
 
 -- Que la cantidad de huéspedes no supere 
 -- la cantidad máxima de personas permitidas para una reserva.
+
+/*
 CREATE ASSERTION CK_GXX_MAX_HUESPEDES
     CHECK NOT EXISTS (
         SELECT 1 FROM GXX_Tipo_Depto t 
@@ -73,8 +89,9 @@ CREATE ASSERTION CK_GXX_MAX_HUESPEDES
             JOIN GXX_Huesped h ON ((h.tipo_doc = p.tipo_doc AND h.nro_doc = p.nro_doc)
         )
 );
+*/
 
-CREATE OR REPLACE FUNCTION FN_GXX_CK_MAX_HUESPEDES () RETURNS trigger
+CREATE OR REPLACE FUNCTION TRFN_GXX_CK_MAX_HUESPEDES () RETURNS trigger
 AS $$
 BEGIN
     IF(EXISTS (
@@ -91,4 +108,35 @@ RETURN new;
 END; $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TR_GXX_CK_MAX_HUESPEDES ON 
- 	 AFTER INSERT OF GXX_Reserva FOR EACH ROW EXECUTE PROCEDURE FN_GXX_CK_MAX_HUESPEDES();
+ 	 AFTER INSERT OF GXX_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GXX_CK_MAX_HUESPEDES();
+
+-- ****************************************************************************************
+-- ****************************************************************************************
+
+-- SERVICES
+
+-- Por cada departamento en el sistema,
+-- el estado en una fecha determinada, esto es si el mismo está Ocupado o Libre.
+
+-- // TODO 
+
+-- Dada una rango de fechas y una ciudad, 
+-- devuelva una lista de departamentos disponibles.
+
+-- // TODO
+
+-- ****************************************************************************************
+-- ****************************************************************************************
+
+-- VIEWS
+
+-- Devuelva un listado de todos los departamentos del sistema 
+-- junto con la recaudación de los mismos en los últimos 6 meses.
+
+CREATE VIEW GRXX_RECAUDACION AS (
+    SELECT d.*, SUM(p.importe) FROM GXX_Departamento d
+    JOIN GXX_Reserva r ON (r.id_dpto = d.id_dpto)
+    JOIN GXX_Pago p ON (p.id_reserva = r.id_reserva)
+    WHERE p.fecha_pago <= NOW() AND p.fecha_pago > NOW() - interval '6 month'
+    GROUP BY 1,2;
+);
