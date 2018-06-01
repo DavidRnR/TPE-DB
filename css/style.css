@@ -1,0 +1,81 @@
+@font-face {
+    font-family: Dense;
+    src: url(../webfonts/dense/Dense-Regular.otf);
+}
+
+@font-face {
+    font-family: Roboto;
+    src: url(../webfonts/roboto/Roboto-Light.ttf);
+}
+
+:root {
+    --brand-primary: #AF170B;
+    --brand-secondary: #E35448;
+    --brand-accent: #D42A1C;
+}
+
+.brand-title {
+    letter-spacing: 4px;
+    font-weight: lighter;
+    font-family: Roboto;
+}
+
+.nav-item a {
+    color: var(--brand-secondary);
+}
+
+.card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+.search-bar {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.search-bar form div input {
+    width: 100% !important;
+}
+
+.logo-home {
+    background-image: url('../img/DGestLogo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 150px;
+}
+
+
+/* Footer styles
+-------------------------------------------------- */
+
+.footer {
+    width: 100%;
+    text-align: center;
+    color: #E35448;
+    font-size: 12px;
+}
+
+.color-primary-0 {
+    color: #AF170B
+}
+
+/* Main Primary color */
+
+.color-primary-1 {
+    color: #E35448
+}
+
+.color-primary-2 {
+    color: #D42A1C
+}
+
+.color-primary-3 {
+    color: #910B00
+}
+
+.color-primary-4 {
+    color: #6B0800
+}

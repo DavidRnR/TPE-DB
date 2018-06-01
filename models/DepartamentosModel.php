@@ -8,10 +8,13 @@ class DepartamentosModel extends Model {
         parent::__construct();
     }
 
+    /**
+     * Get All Departamentos
+     */
     function getDepartamentos() {
-        // $deportistas = $this->db->prepare("SELECT d.*, p.nombre, p.apellido FROM gr18_deportista d NATURAL JOIN gr18_persona p");
-        // $deportistas->execute();
-        // return $deportistas->fetchAll(PDO::FETCH_ASSOC);
+        $departamentos = $this->db->prepare("SELECT * FROM GRXX_Departamento d JOIN GRXX_Ciudad c ON (d.cod_postal = c.cod_postal)");
+        $departamentos->execute();
+        return $departamentos->fetchAll(PDO::FETCH_ASSOC);
     }
    
 }

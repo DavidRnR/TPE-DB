@@ -13,8 +13,12 @@ class DepartamentosController {
     }
 
     function start() {
-        $this->view->getHome();
+        $departamentos = $this->getDepartamentos();
+        $this->view->getHome($departamentos);
     }
 
+    function getDepartamentos() {
+        return $this->model->getDepartamentos();
+    }
 }
 ?>

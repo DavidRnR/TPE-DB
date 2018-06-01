@@ -21,7 +21,7 @@ CREATE TABLE GRXX_Huesped (
 -- CREATE TABLE
 CREATE TABLE GRXX_Ciudad (
     cod_postal int NOT NULL,
-    nombre varchar(30) NOT NULL,
+    ciudad varchar(30) NOT NULL,
     CONSTRAINT PK_GRXX_Ciudad PRIMARY KEY (cod_postal)
 );
 
@@ -71,11 +71,11 @@ INSERT INTO GRXX_Tipo_Dpto (id_tipo_depto,cant_habitaciones,cant_banios,cant_max
 INSERT INTO GRXX_Tipo_Dpto (id_tipo_depto,cant_habitaciones,cant_banios,cant_max_huespedes) VALUES (5,3,2,8);
 
 -- Ciudad
-INSERT INTO GRXX_Ciudad (cod_postal,nombre) VALUES (7000,'Tandil');
-INSERT INTO GRXX_Ciudad (cod_postal,nombre) VALUES (7600,'Mar del Plata');
-INSERT INTO GRXX_Ciudad (cod_postal,nombre) VALUES (1900,'La Plata');
-INSERT INTO GRXX_Ciudad (cod_postal,nombre) VALUES (7165,'Villa Gesell');
-INSERT INTO GRXX_Ciudad (cod_postal,nombre) VALUES (7167,'Pinamar');
+INSERT INTO GRXX_Ciudad (cod_postal,ciudad) VALUES (7000,'Tandil');
+INSERT INTO GRXX_Ciudad (cod_postal,ciudad) VALUES (7600,'Mar del Plata');
+INSERT INTO GRXX_Ciudad (cod_postal,ciudad) VALUES (1900,'La Plata');
+INSERT INTO GRXX_Ciudad (cod_postal,ciudad) VALUES (7165,'Villa Gesell');
+INSERT INTO GRXX_Ciudad (cod_postal,ciudad) VALUES (7167,'Pinamar');
 
 -- Departamento
 INSERT INTO GRXX_Departamento (id_dpto,descripcion,superficie,id_tipo_depto,tipo_doc,nro_doc,cod_postal) VALUES (1,'Pequeño pero moderno',40,1,1,31156181,7000);
