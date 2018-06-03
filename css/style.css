@@ -10,7 +10,7 @@
 
 :root {
     --brand-primary: #AF170B;
-    --brand-secondary: #E35448;
+    --brand-secondary: #ED583A;
     --brand-accent: #D42A1C;
 }
 
@@ -22,6 +22,10 @@ body {
 
 .main-container {
     height: 100%;
+}
+
+.navbar-brand {
+    cursor: pointer;
 }
 
 .brand-title {
@@ -52,12 +56,32 @@ body {
     margin-top: 10%;
 }
 
+.form-search-depto-small {
+    margin-top: 0;
+}
+
 .form-search-depto form {
     width: 100%;
 }
 
-.form-search-depto form div input {
-    width: 100% !important;
+.form-search-depto form div label {
+    font-family: Roboto;
+    color: var(--brand-secondary);
+}
+
+.form-search-depto form div select {
+    width: 100%;
+    height: 38px;
+    border-radius: 5px;
+    font-family: Roboto;
+}
+
+.form-search-depto form div select:focus {
+    border-radius: 5px;
+}
+
+.legend-months {
+    color: var(--brand-accent);
 }
 
 .logo-home {
@@ -68,6 +92,9 @@ body {
     height: 230px;
 }
 
+.logo-home-small {
+    height: 100px;
+}
 
 /* Footer styles
 -------------------------------------------------- */
@@ -87,6 +114,21 @@ body {
     color: #E35448;
 }
 
+
+/* Animations
+-------------------------------------------------- */
+.fadeIn {
+    animation: fadeIn 1.5s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 .color-primary-0 {
     color: #AF170B
 }

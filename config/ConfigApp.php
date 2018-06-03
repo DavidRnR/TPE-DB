@@ -7,5 +7,6 @@ class ConfigApp {
     public static $ACTIONS = [
         'home' => "Departamentos",
         'getDepartamentos' => "Departamentos",
+        'getDepartamento' => "Departamentos",
     ];
 }
