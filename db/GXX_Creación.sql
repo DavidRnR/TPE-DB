@@ -50,7 +50,7 @@ CREATE TABLE GRXX_Departamento (
 -- Table: GRXX_EstadoLuegoOcupacion
 CREATE TABLE GRXX_EstadoLuegoOcupacion (
     id_reserva int  NOT NULL,
-    fecha int  NOT NULL,
+    fecha date  NOT NULL,
     comentario varchar(2048)  NOT NULL,
     CONSTRAINT PK_GRXX_EstadoLuegoOcupacion PRIMARY KEY (id_reserva,fecha)
 );
@@ -66,7 +66,7 @@ CREATE TABLE GRXX_Habitacion (
     sillon boolean  NOT NULL,
     frigobar boolean NOT NULL,
     mesa boolean  NOT NULL,
-    sillas boolean  NOT NULL,
+    sillas int  NOT NULL,
     cocina boolean  NOT NULL,
     CONSTRAINT PK_GRXX_Habitacion PRIMARY KEY (id_dpto,id_habitacion)
 );

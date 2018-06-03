@@ -14,6 +14,16 @@
     --brand-accent: #D42A1C;
 }
 
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.main-container {
+    height: 100%;
+}
+
 .brand-title {
     letter-spacing: 4px;
     font-weight: lighter;
@@ -36,7 +46,17 @@
     justify-content: center;
 }
 
-.search-bar form div input {
+.form-search-depto {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+
+.form-search-depto form {
+    width: 100%;
+}
+
+.form-search-depto form div input {
     width: 100% !important;
 }
 
@@ -44,7 +64,8 @@
     background-image: url('../img/DGestLogo.png');
     background-size: contain;
     background-repeat: no-repeat;
-    height: 150px;
+    background-position-x: center;
+    height: 230px;
 }
 
 
@@ -52,10 +73,18 @@
 -------------------------------------------------- */
 
 .footer {
+    position: absolute;
+    bottom: 0;
     width: 100%;
     text-align: center;
-    color: #E35448;
+}
+
+.footer span {
     font-size: 12px;
+}
+
+.footer span a i {
+    color: #E35448;
 }
 
 .color-primary-0 {

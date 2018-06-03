@@ -7,9 +7,13 @@ class DepartamentosView extends View {
         parent::__construct();
     }
 
-    function getHome($departamentos) {
-        $this->smarty->assign('departamentos',$departamentos);
+    function getHome() {
         $this->smarty->display("index.tpl");
+    }
+
+    function getDepartamentos($departamentos) {
+        $this->smarty->assign('departamentos',$departamentos);
+        $this->smarty->display("departamentos.tpl");
     }
 }
 ?>
