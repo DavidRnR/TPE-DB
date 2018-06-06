@@ -1,24 +1,9 @@
--- DROP TABLES IF EXISTS
-DROP TABLE IF EXISTS GR08_Departamento CASCADE;
-DROP TABLE IF EXISTS GR08_Tipo_Dpto CASCADE;
-DROP TABLE IF EXISTS GR08_Habitacion CASCADE;
-DROP TABLE IF EXISTS GR08_CostoDepto CASCADE;
-DROP TABLE IF EXISTS GR08_Reserva CASCADE;
-DROP TABLE IF EXISTS GR08_Pago CASCADE;
-DROP TABLE IF EXISTS GR08_Tipo_Pago CASCADE;
-DROP TABLE IF EXISTS GR08_EstadoLuegoOcupacion CASCADE;
-DROP TABLE IF EXISTS GR08_Huesped CASCADE;
-DROP TABLE IF EXISTS GR08_Huesped_Reserva CASCADE;
-DROP TABLE IF EXISTS GR08_Persona CASCADE;
-DROP TABLE IF EXISTS GR08_Comentario CASCADE;
-
-
 -- CREATE TABLES
 
 -- Table: GR08_Comentario
 CREATE TABLE GR08_Comentario (
     tipo_doc int  NOT NULL,
-    nro_doc char(8)  NOT NULL,
+    nro_doc decimal(11,0)  NOT NULL,
     id_reserva int  NOT NULL,
     fecha_hora_comentario date  NOT NULL,
     comentario varchar(2048)  NOT NULL,
@@ -42,7 +27,7 @@ CREATE TABLE GR08_Departamento (
     superficie decimal(10,2)  NOT NULL,
     id_tipo_depto int  NOT NULL,
     tipo_doc int  NOT NULL,
-    nro_doc char(8)  NOT NULL,
+    nro_doc decimal(11,0)  NOT NULL,
     precio_noche decimal(10,2)  NOT NULL,
     CONSTRAINT PK_GR08_Departamento PRIMARY KEY (id_dpto)
 );
@@ -63,7 +48,7 @@ CREATE TABLE GR08_Habitacion (
     posib_camas_dobles int  NOT NULL,
     posib_camas_kind int  NOT NULL,
     tv boolean  NOT NULL,
-    sillon boolean  NOT NULL,
+    sillon int  NOT NULL,
     frigobar boolean NOT NULL,
     mesa boolean  NOT NULL,
     sillas int  NOT NULL,
@@ -74,14 +59,14 @@ CREATE TABLE GR08_Habitacion (
 -- Table: GR08_Huesped
 CREATE TABLE GR08_Huesped (
     tipo_doc int  NOT NULL,
-    nro_doc char(8)  NOT NULL,
+    nro_doc decimal(11,0)  NOT NULL,
     CONSTRAINT PK_GR08_Huesped PRIMARY KEY (tipo_doc,nro_doc)
 );
 
 -- Table: GR08_Huesped_Reserva
 CREATE TABLE GR08_Huesped_Reserva (
     tipo_doc int  NOT NULL,
-    nro_doc char(8)  NOT NULL,
+    nro_doc decimal(11,0)  NOT NULL,
     id_reserva int  NOT NULL,
     CONSTRAINT PK_GR08_Huesped_Reserva PRIMARY KEY (tipo_doc,nro_doc,id_reserva)
 );
@@ -91,15 +76,15 @@ CREATE TABLE GR08_Pago (
     fecha_pago timestamp  NOT NULL,
     id_reserva int  NOT NULL,
     id_tipo_pago int  NOT NULL,
-    comentario varchar(2048)  NULL,
-    importe decimal(8,2)  NOT NULL,
+    comentario varchar(80)  NULL,
+    importe decimal(8,3)  NOT NULL,
     CONSTRAINT PK_GR08_Pago PRIMARY KEY (fecha_pago,id_reserva,id_tipo_pago)
 );
 
 -- Table: GR08_Persona
 CREATE TABLE GR08_Persona (
     tipo_doc int  NOT NULL,
-    nro_doc char(8)  NOT NULL,
+    nro_doc decimal(11,0)  NOT NULL,
     apellido varchar(80)  NOT NULL,
     nombre varchar(80)  NOT NULL,
     fecha_nac date  NOT NULL,
@@ -115,10 +100,10 @@ CREATE TABLE GR08_Reserva (
     fecha_hasta date  NOT NULL,
     tipo varchar(15)  NOT NULL,
     id_dpto int  NOT NULL,
-    valor_noche decimal(8,2) NOT NULL,
+    valor_noche decimal(8,3) NOT NULL,
     limpieza boolean NOT NULL,
     tipo_doc int NOT NULL,
-    nro_doc char(8) NOT NULL,
+    nro_doc decimal(11,0) NOT NULL,
     CONSTRAINT PK_GR08_Reserva PRIMARY KEY (id_reserva)
 );
 

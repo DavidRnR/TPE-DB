@@ -40,7 +40,6 @@ class DepartamentosController {
         if (isset($_GET['id_depto'])) {
             $deptoId = $_GET['id_depto'];
             $departamento = $this->model->getDepartamentoById($deptoId);
-
             $this->view->getDepartamento($departamento);
         }
     }

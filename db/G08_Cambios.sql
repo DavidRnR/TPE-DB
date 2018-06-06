@@ -96,21 +96,21 @@ INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUE
 INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUES (8,to_date('02/03/2018','dd/MM/yyyy'),to_date('19/12/2018','dd/MM/yyyy'),920);
 
 -- Habitación
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,1,2,1,0,true,false,false,true,3,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (2,1,2,1,0,true,false,false,true,3,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (3,1,3,1,1,true,false,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (3,2,3,1,1,true,false,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (4,1,3,1,0,true,false,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (4,2,3,1,0,true,false,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (5,1,2,1,1,true,true,true,true,3,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (5,2,2,1,1,true,true,true,true,3,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (6,1,2,0,0,true,false,false,true,3,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,1,4,1,1,true,true,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,2,2,0,0,false,false,false,false,1,false);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,3,2,0,0,false,false,false,false,1,false);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,1,2,1,1,true,true,true,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,2,2,1,1,true,false,false,true,4,true);
-INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,3,2,1,1,true,false,false,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,1,2,1,0,true,0,false,true,3,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (2,1,2,1,0,true,0,false,true,3,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (3,1,3,1,1,true,0,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (3,2,3,1,1,true,0,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (4,1,3,1,0,true,0,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (4,2,3,1,0,true,0,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (5,1,2,1,1,true,1,true,true,3,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (5,2,2,1,1,true,1,true,true,3,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (6,1,2,0,0,true,0,false,true,3,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,1,4,1,1,true,1,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,2,2,0,0,false,0,false,false,1,false);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (7,3,2,0,0,false,0,false,false,1,false);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,1,2,1,1,true,1,true,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,2,2,1,1,true,0,false,true,4,true);
+INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (8,3,2,1,1,true,0,false,true,4,true);
 
 -- Huesped
 INSERT INTO GR08_Huesped (tipo_doc,nro_doc) VALUES (1,28499199);
@@ -260,7 +260,7 @@ CREATE ASSERTION CK_GR08_MAX_HUESPEDES
 --             SELECT COUNT(*) 
 --             FROM GR08_Persona p 
 --             JOIN GR08_Huesped_Reserva hr ON ((hr.tipo_doc = p.tipo_doc AND hr.nro_doc = p.nro_doc)
---     ) THEN
+--     )))) THEN
 --     RAISE EXCEPTION 'Departamento ocupado';
 -- END IF;
 -- RETURN new;
@@ -277,12 +277,43 @@ CREATE ASSERTION CK_GR08_MAX_HUESPEDES
 -- Por cada departamento en el sistema,
 -- el estado en una fecha determinada, esto es si el mismo está Ocupado o Libre.
 
--- // TODO 
+CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_ESTADO(_fecha date, _id_dpto int) 
+RETURNS varchar(40) AS $$
+BEGIN
+    IF(EXISTS (
+        SELECT 1
+        FROM GR08_Reserva r 
+        WHERE _id_dpto = r.id_dpto AND  _fecha BETWEEN r.fecha_desde and r.fecha_hasta)) THEN
+        RETURN 'Ocupado';
+    END IF;
+RETURN 'Libre';
+END;
+$$ LANGUAGE plpgsql;
 
 -- Dada una rango de fechas y una ciudad, 
 -- devuelva una lista de departamentos disponibles.
 
--- // TODO
+CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_BY_FECHA_CIUDAD(_fecha_desde date, _fecha_hasta date, _ciudad int) 
+RETURNS TABLE (id_dpto int, descripcion varchar(80), superficie decimal(10,2), precio_noche decimal(10,2), cod_postal int, ciudad varchar(30)) AS $$
+BEGIN
+        RETURN QUERY
+        SELECT d.id_dpto, d.descripcion, d.superficie, d.precio_noche, c.cod_postal, c.ciudad 
+        FROM GR08_Reserva r
+        JOIN GR08_Departamento d ON (d.id_dpto = r.id_dpto)
+        JOIN GR08_Ciudad c ON (_ciudad = c.cod_postal)
+    WHERE r.fecha_desde >= _fecha_desde AND r.fecha_hasta <= _fecha_hasta
+    GROUP BY d.id_dpto,c.cod_postal; 
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Dado un DeptoID y un Mes (Fecha Desde y Hasta), Devolver todos los días del mes que están disponibles
+CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,_fecha_desde date, _fecha_hasta date) 
+ RETURNS TABLE (fecha date)AS $$
+BEGIN
+   
+END;
+$$ LANGUAGE plpgsql;
 
 -- ****************************************************************************************
 -- ****************************************************************************************
