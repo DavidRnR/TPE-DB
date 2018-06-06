@@ -14,6 +14,9 @@ var searchBar = document.querySelector('#search-bar');
 // Calendar
 var vanillaCalendar;
 
+// Current Depto
+var deptoID;
+
 formSearchDepto.addEventListener('submit', (event) => {
     event.preventDefault();
     let headers = new Headers();
@@ -52,8 +55,9 @@ formSearchDepto.addEventListener('submit', (event) => {
 
 });
 
-function getData(param, action) {
-    event.preventDefault()
+function getData(param, action, renderFunction = null, api = false) {
+    event.preventDefault();
+
     let headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
@@ -63,32 +67,117 @@ function getData(param, action) {
         mode: 'no-cors',
         cache: 'default'
     };
-    let myRequest = new Request(action + '&id_depto=' + param, options);
+
+    // By Default
+    let endpoint = action + '&id_depto=' + param;
+
+    if(api) {
+        endpoint = 'api/' + param;
+    }
+    let myRequest = new Request(endpoint, options);
 
     setTimeout(() => {
         fetch(myRequest).then((data) => {
-            return data.text();
+            if(api) {
+                return data.json();
+            }
+            else {
+                return data.text();
+            }
         }).then((data) => {
-           
+
             // Render Data
-            appLoader.innerHTML = data;
+            if (!renderFunction) {
+                appLoader.innerHTML = data;
+            }
+            else {
+                renderFunction(data);
+            }
 
-            vanillaCalendar = getCalendar();
+            if (!vanillaCalendar) {
+                createCalendar();
+            }
 
-            console.dir(vanillaCalendar);
-            vanillaCalendar.init({
-                disablePastDays: false
-            });
-           
         });
     }, 1000);
+}
+
+/**
+ * Create Calendar
+ */
+function createCalendar() {
+
+    vanillaCalendar = getCalendar();
+
+    vanillaCalendar.afterNext = getCurrentDate;
+    vanillaCalendar.afterPrevious = getCurrentDate;
+
+    vanillaCalendar.init({
+        disablePastDays: false
+    });
+
+}
+
+/**
+ * Get Current Date from Calendar
+ */
+function getCurrentDate() {
+    // getMonth() return 0 to 11 -  So plus 1 and make it 1 to 12 Months
+    let month = parseInt(vanillaCalendar.date.getMonth()) + 1;
+
+    let endpointParams = 'reservas/' + deptoID + '&month=' + month + ' &year=' + vanillaCalendar.date.getFullYear();
+    // Get Data from API REST
+    getData(endpointParams, null, updateReservasCalendar, true);
+}
+
+/**
+ * Set in Calendar Days reserved
+ * @param {*} reservas 
+ */
+function updateReservasCalendar(reservas) {
+
+    if (reservas && reservas.length > 0) {
+        for (let index = 0; index < vanillaCalendar.month.children.length; index++) {            
+            // Get Day from the Calendar and set Hours to Midnight
+            calendarDate = new Date(vanillaCalendar.month.children[index].getAttribute('data-calendar-date'));
+            calendarDate.setHours(0,0,0,0);
+
+            for (let i = 0; i < reservas.length; i++) {
+                // Parse Dates
+                var d = reservas[i].fecha_desde.split("-");
+                var desde = new Date(d[0], d[1] - 1, d[2]);
+                var h = reservas[i].fecha_hasta.split("-");
+                var hasta = new Date(h[0], h[1] - 1, h[2]);
+
+                // Apply Style to Calendar
+                if ( calendarDate >= desde && calendarDate <= hasta ) {
+                    vanillaCalendar.month.children[index].className += ' day-reserved';
+                }
+                
+            }
+        }
+    }
+
+
+}
+
+/**
+ * Get Info Departamento
+ * @param {*} param 
+ * @param {*} action 
+ */
+function getDepto(param, action) {
+
+    // Save Current Depto 
+    deptoID = param;
+
+    getData(param, action);
 }
 
 /**
  * Set Search Bar small
  */
 function setSearchbarSmall() {
-    console.dir(searchBar);
     searchBar.className += ' search-bar-small';
     // Logo 
     searchBar.children[0].className = 'col-3 logo-home logo-home-small';

@@ -11,6 +11,7 @@
 :root {
     --brand-primary: #AF170B;
     --brand-secondary: #ED583A;
+    --brand-third: #F3BE4F;
     --brand-accent: #D42A1C;
 }
 
@@ -81,6 +82,9 @@ body {
 }
 
 .legend-months {
+    margin-top: 10px;
+}
+.legend-months p i {
     color: var(--brand-accent);
 }
 
@@ -94,6 +98,11 @@ body {
 
 .logo-home-small {
     height: 100px;
+}
+
+.day-reserved {
+    background-color: var(--brand-accent) !important;
+    opacity: 0.7 !important;
 }
 
 /* Footer styles
@@ -114,9 +123,9 @@ body {
     color: #E35448;
 }
 
-
 /* Animations
 -------------------------------------------------- */
+
 .fadeIn {
     animation: fadeIn 1.5s;
 }
@@ -129,6 +138,7 @@ body {
         opacity: 1;
     }
 }
+
 .color-primary-0 {
     color: #AF170B
 }

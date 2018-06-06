@@ -1,6 +1,6 @@
 <?php
 
-include_once 'dbConfig.php';
+require_once dirname(__DIR__).'/dbConfig.php';
 
 abstract class Model {
     protected $db;

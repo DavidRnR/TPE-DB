@@ -1,6 +1,5 @@
 <?php
-
-include_once "models/Model.php";
+require_once dirname(__DIR__).'/models/Model.php';
 
 class DepartamentosModel extends Model {
     
@@ -45,5 +44,18 @@ class DepartamentosModel extends Model {
         return $departamento->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Get Reserva by Depto ID and include in a Month
+     */
+    function getReservasByDeptoByMonth($deptoID, $month, $year) {
+        $reservas = $this->db->prepare("SELECT * FROM GR08_Reserva r WHERE r.id_dpto = $deptoID 
+                                        AND (extract(month from r.fecha_desde) = $month 
+                                        OR extract(month from r.fecha_hasta) = $month) 
+                                        AND (extract(year from r.fecha_desde) = $year 
+                                        OR extract(year from r.fecha_hasta) = $year)");
+                                        
+        $reservas->execute();
+        return $reservas->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

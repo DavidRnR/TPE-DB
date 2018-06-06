@@ -14,8 +14,8 @@
         </div>
 
     </div>
-    <div class="col-7">
-		<div id="v-cal">
+    <div class="row col-7 d-flex justify-content-center align-self-center">
+		<div class="col-8" id="v-cal">
 			<div class="vcal-header">
 				<button class="vcal-btn" data-calendar-toggle="previous">
 					<svg height="24" version="1.1" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -45,8 +45,8 @@
 			</div>
 			<div class="vcal-body" data-calendar-area="month"></div>
 		</div>
-		<div class="row col-12">
-			<p><i class="fas fa-square fa-fw legend-months"></i>Disponible</p>
+		<div class="row col-8 legend-months">
+			<p><i class="fas fa-square fa-fw"></i>Reservado</p>
 		</div>
     </div>
 </div>

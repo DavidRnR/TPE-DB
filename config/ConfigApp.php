@@ -8,5 +8,6 @@ class ConfigApp {
         'home' => "Departamentos",
         'getDepartamentos' => "Departamentos",
         'getDepartamento' => "Departamentos",
+        'getReservasByDeptoByMonth' => "Departamentos"
     ];
 }

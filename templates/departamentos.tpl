@@ -10,7 +10,7 @@
                     <p class="card-text">{$depto.descripcion}</p>
                     <p class="card-text">Superficie: {$depto.superficie}m<sup>2</sup></p>
                     <p class="card-text">Ubicación: {$depto.ciudad}</p>
-                    <a href="#" class="btn btn-primary" onClick="getData('{$depto.id_dpto}','getDepartamento')">Disponibilidad</a>
+                    <a href="#" class="btn btn-primary" onClick="getDepto('{$depto.id_dpto}','getDepartamento')">Disponibilidad</a>
                 </div>
             </div>
             {/foreach}

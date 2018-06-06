@@ -62,7 +62,7 @@
 }
 
 #v-cal .vcal-week {
-    background-color: var(--brand-secondary);
+    background-color: var(--brand-third);
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
