@@ -1,8 +1,8 @@
 <div class="row">
     <div class="col-5">
 
-        <div class="card">
-            <img class="card-img-top" src="img/deptoTest.jpg" alt="Card image cap">
+        <div class="card" style="max-width: 100%;">
+            <img class="card-img-top" src="{$departamento.path}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">Departamento</h5>
                 <p class="card-text">{$departamento.descripcion}</p>

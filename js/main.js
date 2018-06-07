@@ -19,6 +19,10 @@ var deptoID;
 
 formSearchDepto.addEventListener('submit', (event) => {
     event.preventDefault();
+
+    // Restore Calendar
+    vanillaCalendar = null;
+
     let headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
@@ -126,6 +130,9 @@ function getCurrentDate() {
     let month = parseInt(vanillaCalendar.date.getMonth()) + 1;
 
     let endpointParams = 'reservas/' + deptoID + '&month=' + month + ' &year=' + vanillaCalendar.date.getFullYear();
+    //Hidden Month Until Update Reservas and show Spinner
+    vanillaCalendar.clearCalendar();
+    vanillaCalendar.month.appendChild(getSpinner('spinner-calendar'));
     // Get Data from API REST
     getData(endpointParams, null, updateReservasCalendar, true);
 }
@@ -135,6 +142,9 @@ function getCurrentDate() {
  * @param {*} reservas 
  */
 function updateReservasCalendar(reservas) {
+    // Append Month - Days
+    vanillaCalendar.clearCalendar();
+    vanillaCalendar.createMonth();
 
     if (reservas && reservas.length > 0) {
         for (let index = 0; index < vanillaCalendar.month.children.length; index++) {            
@@ -157,7 +167,6 @@ function updateReservasCalendar(reservas) {
             }
         }
     }
-
 
 }
 
@@ -189,9 +198,9 @@ function setSearchbarSmall() {
 /**
  * Get Spinner - Loading
  */
-function getSpinner() {
+function getSpinner(customClass = null) {
     let containerSpinner = document.createElement('div');
-    containerSpinner.className = 'row justify-content-center';
+    containerSpinner.className = (customClass) ? customClass : 'row justify-content-center';
     let loadingSpinner = document.createElement('i');
     loadingSpinner.className = 'fa fa-spinner fa-spin fa-2x';
     containerSpinner.appendChild(loadingSpinner);

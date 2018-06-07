@@ -7,16 +7,25 @@ CREATE TABLE GR08_Tipo_Documento (
     CONSTRAINT PK_GR08_Tipo_Documento PRIMARY KEY (id_tipo_doc)
 );
 
--- CREATE TABLE
+-- Table: GR08_Ciudad
 CREATE TABLE GR08_Ciudad (
     cod_postal int NOT NULL,
     ciudad varchar(30) NOT NULL,
     CONSTRAINT PK_GR08_Ciudad PRIMARY KEY (cod_postal)
 );
 
+-- Table: GR08_Ciudad
+CREATE TABLE GR08_Imagen_Depto (
+    id_imagen int NOT NULL,
+    path varchar(200) NOT NULL,
+    CONSTRAINT PK_GR08_Imagen_Depto PRIMARY KEY (id_imagen)
+);
+
+
 -- ALTER TABLES
 -- -- FK_GR08_Persona_Tipo_Doc
-ALTER TABLE GR08_Persona ADD CONSTRAINT FK_GR08_Persona_Tipo_Doc
+ALTER TABLE GR08_Persona 
+    ADD CONSTRAINT FK_GR08_Persona_Tipo_Doc
     FOREIGN KEY (tipo_doc)
     REFERENCES GR08_Tipo_Documento (id_tipo_doc)  
 ;
@@ -26,6 +35,12 @@ ALTER TABLE GR08_Persona ADD CONSTRAINT FK_GR08_Persona_Tipo_Doc
 ALTER TABLE GR08_Departamento
     ADD COLUMN cod_postal int NOT NULL,
     ADD CONSTRAINT FK_GR08_Ciudad FOREIGN KEY (cod_postal) REFERENCES GR08_Ciudad (cod_postal);
+
+-- FK_GR08_Imagen
+ALTER TABLE GR08_Imagen_Depto 
+     ADD CONSTRAINT FK_GR08_Imagen_Departamento
+     FOREIGN KEY (id_imagen)
+     REFERENCES GR08_Departamento (id_dpto);  
 
 --***********************************************************************************************************
 --***********************************************************************************************************
@@ -66,6 +81,15 @@ INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (7600,'Mar del Plata');
 INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (1900,'La Plata');
 INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (7165,'Villa Gesell');
 INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (7167,'Pinamar');
+
+-- Imagenes Deptos
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (1,'img/departamentos/depto-id1.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (2,'img/departamentos/depto-id2.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (3,'img/departamentos/depto-id3.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (4,'img/departamentos/depto-id4.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (5,'img/departamentos/depto-id5.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (6,'img/departamentos/depto-id6.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (7,'img/departamentos/depto-id7.jpg');
 
 -- Departamento
 INSERT INTO GR08_Departamento (id_dpto,descripcion,superficie,id_tipo_depto,tipo_doc,nro_doc,precio_noche,cod_postal) VALUES (1,'Pequeño pero moderno',40,1,1,31156181,350,7000);
@@ -244,30 +268,28 @@ CREATE ASSERTION CK_GR08_MAX_HUESPEDES
         JOIN GR08_Departamento d ON (t.tipo_dpto = d.id_tipo_dpto)
         WHERE t.cant_max_huespedes > (
             SELECT COUNT(*) 
-            FROM GR08_Persona p 
-            JOIN GR08_Huesped h ON ((h.tipo_doc = p.tipo_doc AND h.nro_doc = p.nro_doc)
-        )
+            FROM GR08_Huesped_Reserva hr WHERE hr.tipo_doc = NEW.tipo_doc AND hr.nro_doc = NEW.nro_doc
+        );
 );
 */
 
--- CREATE OR REPLACE FUNCTION TRFN_GR08_CK_MAX_HUESPEDES () RETURNS trigger
--- AS $$
--- BEGIN
---     IF(EXISTS (
---        SELECT 1 FROM GR08_Tipo_Depto t 
---         JOIN GR08_Departamento d ON (t.tipo_dpto = d.id_tipo_dpto)
---         WHERE t.cant_max_huespedes > (
---             SELECT COUNT(*) 
---             FROM GR08_Persona p 
---             JOIN GR08_Huesped_Reserva hr ON ((hr.tipo_doc = p.tipo_doc AND hr.nro_doc = p.nro_doc)
---     )))) THEN
---     RAISE EXCEPTION 'Departamento ocupado';
--- END IF;
--- RETURN new;
--- END; $$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION TRFN_GR08_CK_MAX_HUESPEDES () RETURNS trigger
+AS $$
+BEGIN
+    IF(EXISTS (
+       SELECT 1 FROM GR08_Tipo_Depto t 
+        JOIN GR08_Departamento d ON (t.tipo_dpto = d.id_tipo_dpto)
+        WHERE t.cant_max_huespedes > (
+            SELECT COUNT(*) 
+            FROM GR08_Huesped_Reserva hr WHERE hr.tipo_doc = NEW.tipo_doc AND hr.nro_doc = NEW.nro_doc
+    ))) THEN
+    RAISE EXCEPTION 'Departamento ocupado';
+END IF;
+RETURN NEW;
+END; $$ LANGUAGE plpgsql;
 
--- CREATE TRIGGER TR_GR08_CK_MAX_HUESPEDES 
---  	 AFTER INSERT ON GR08_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_MAX_HUESPEDES();
+CREATE TRIGGER TR_GR08_CK_MAX_HUESPEDES 
+ 	 AFTER INSERT ON GR08_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_MAX_HUESPEDES();
 
 -- ****************************************************************************************
 -- ****************************************************************************************

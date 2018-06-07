@@ -3,8 +3,8 @@
     <div class="col-12">
         <div class="card-columns">
             {foreach from=$departamentos key=index item=depto}
-            <div class="card">
-                <img class="card-img-top" src="img/deptoTest.jpg" alt="Card image cap">
+            <div class="card mb-4">
+                <img class="card-img-top" src="{$depto.path}" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">Departamento</h5>
                     <p class="card-text">{$depto.descripcion}</p>

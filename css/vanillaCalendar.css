@@ -35,8 +35,7 @@
 
 #v-cal .vcal-btn:active {
     border-radius: 0;
-    -webkit-box-shadow: 0 0 0 2px rgba(16, 152, 158, .1);
-    box-shadow: 0 0 0 2px rgba(16, 152, 158, .1)
+    transform: scale(1.2);
 }
 
 #v-cal .vcal-header {
@@ -79,7 +78,6 @@
     -ms-flex: 0 0 14.28%;
     flex: 0 0 14.28%;
     font-family: Roboto;
-    font-size: 19.2px;
     font-size: 1.2rem;
     font-weight: 700;
     max-width: 14.28%;
@@ -92,7 +90,8 @@
 #v-cal .vcal-body {
     background-color: rgba(231, 233, 237, .3);
     -ms-flex-wrap: wrap;
-    flex-wrap: wrap
+    flex-wrap: wrap;
+    min-height: 312px;
 }
 
 #v-cal .vcal-body,
@@ -139,4 +138,18 @@
     border-radius: 0;
     cursor: not-allowed;
     opacity: .5
+}
+
+/*Media Queries
+----------------------------------------------------*/
+@media only screen and (max-width: 1366px) {
+    #v-cal .vcal-week span {
+        font-size: 0.7rem;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    #v-cal .vcal-week span {
+        font-size: 0.5rem;
+    }
 }

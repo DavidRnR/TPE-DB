@@ -21,7 +21,8 @@ class DepartamentosModel extends Model {
      * Get All Departamentos
      */
     function getDepartamentos() {
-        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal)");
+        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal) 
+                                                      JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto)");
         $departamentos->execute();
         return $departamentos->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -30,7 +31,9 @@ class DepartamentosModel extends Model {
      * Get All Departamentos by Ciudad
      */
     function getDepartamentosByCiudad($ciudad) {
-        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal) WHERE c.cod_postal = $ciudad");
+        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal) 
+                                                      JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto)
+                                                      WHERE c.cod_postal = $ciudad");
         $departamentos->execute();
         return $departamentos->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -39,13 +42,14 @@ class DepartamentosModel extends Model {
      * Get Departamento by ID
      */
     function getDepartamentoById($deptoID) {
-        $departamento = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal) WHERE d.id_dpto = $deptoID");
+        $departamento = $this->db->prepare("SELECT * FROM GR08_Departamento d JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal) 
+                                                     JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto) WHERE d.id_dpto = $deptoID");
         $departamento->execute();
         return $departamento->fetch(PDO::FETCH_ASSOC);
     }
 
     /**
-     * Get Reserva by Depto ID and include in a Month
+     * Get Reserva by Depto ID and included in a Month
      */
     function getReservasByDeptoByMonth($deptoID, $month, $year) {
         $reservas = $this->db->prepare("SELECT * FROM GR08_Reserva r WHERE r.id_dpto = $deptoID 
