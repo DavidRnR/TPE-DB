@@ -2,6 +2,10 @@
     <div class="col-12 logo-home">
         <!-- Contains logo -->
     </div>
+    <div class="col-12 text-center title-home">
+        <h1>DGest</h1>
+        <div class="col-12">Encuentra tu Departamento</div>
+    </div>
     <div class="col-5 form-search-depto">
         <form class="form-inline" id="search-depto">
             <div class="col-1 mb-2">

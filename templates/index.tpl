@@ -22,7 +22,7 @@
 
             <ul class="nav justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Contacto</a>
+                    <a class="nav-link active" href="#" id="contacto">Contacto</a>
                 </li>
             </ul>
         </nav>
@@ -36,15 +36,14 @@
 
             </div>
         </div>
-        <!-- <footer class="footer">
+    </div>
+    <footer class="footer">
             <span class="text-muted">Designed by CDM - 2018 -
                 <a href="https://github.com/DavidRnR/TPE-DB" target="_blank" title="Github">
                     <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
             </span>
-        </footer> -->
-    </div>
-
+        </footer>
 
 </body>
 

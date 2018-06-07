@@ -82,15 +82,6 @@ INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (1900,'La Plata');
 INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (7165,'Villa Gesell');
 INSERT INTO GR08_Ciudad (cod_postal,ciudad) VALUES (7167,'Pinamar');
 
--- Imagenes Deptos
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (1,'img/departamentos/depto-id1.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (2,'img/departamentos/depto-id2.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (3,'img/departamentos/depto-id3.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (4,'img/departamentos/depto-id4.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (5,'img/departamentos/depto-id5.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (6,'img/departamentos/depto-id6.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (7,'img/departamentos/depto-id7.jpg');
-
 -- Departamento
 INSERT INTO GR08_Departamento (id_dpto,descripcion,superficie,id_tipo_depto,tipo_doc,nro_doc,precio_noche,cod_postal) VALUES (1,'Pequeño pero moderno',40,1,1,31156181,350,7000);
 INSERT INTO GR08_Departamento (id_dpto,descripcion,superficie,id_tipo_depto,tipo_doc,nro_doc,precio_noche,cod_postal) VALUES (2,'Monoambiente simple',41,1,1,30156682,370,7000);
@@ -118,6 +109,15 @@ INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUE
 INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUES (7,to_date('02/03/2018','dd/MM/yyyy'),to_date('19/12/2018','dd/MM/yyyy'),800);
 INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUES (8,to_date('20/12/2017','dd/MM/yyyy'),to_date('01/03/2018','dd/MM/yyyy'),1400);
 INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUES (8,to_date('02/03/2018','dd/MM/yyyy'),to_date('19/12/2018','dd/MM/yyyy'),920);
+
+-- Imagenes Deptos
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (1,'img/departamentos/depto-id1.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (2,'img/departamentos/depto-id2.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (3,'img/departamentos/depto-id3.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (4,'img/departamentos/depto-id4.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (5,'img/departamentos/depto-id5.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (6,'img/departamentos/depto-id6.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (7,'img/departamentos/depto-id7.jpg');
 
 -- Habitación
 INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,1,2,1,0,true,0,false,true,3,true);

@@ -34,8 +34,9 @@ body {
     background-color: var(--brand-secondary);
     border-color: var(--brand-secondary);
 }
+
 .btn-primary:focus {
-    box-shadow: none !important; 
+    box-shadow: none !important;
 }
 
 .btn-primary:active {
@@ -51,7 +52,7 @@ body {
 .brand-title {
     letter-spacing: 4px;
     font-weight: lighter;
-    font-family: Roboto;
+    font-family: dense;
 }
 
 .nav-item a {
@@ -73,7 +74,7 @@ body {
 .form-search-depto {
     display: flex;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: 7%;
 }
 
 .form-search-depto-small {
@@ -99,13 +100,14 @@ body {
 .form-search-depto form div select:focus {
     border-radius: 5px;
     border-color: var(--brand-accent);
-    box-shadow: 0 0 1pt 0 var(--brand-accent); 
+    box-shadow: 0 0 1pt 0 var(--brand-accent);
     outline: none;
 }
 
 .legend-months {
     margin-top: 10px;
 }
+
 .legend-months p i {
     color: var(--brand-accent);
 }
@@ -122,6 +124,20 @@ body {
     height: 100px;
 }
 
+.title-home h1 {
+    font-family: dense;
+    font-size: 5.5rem;
+    letter-spacing: 10px;
+    color: var(--brand-secondary);
+}
+
+.title-home div {
+    font-family: Roboto;
+    font-size: 19px;
+    color: var(--brand-primary);
+    animation: float 4s infinite;
+}
+
 .day-reserved {
     background-color: var(--brand-accent) !important;
     opacity: 0.7 !important;
@@ -132,6 +148,7 @@ body {
     width: 100%;
     padding-top: 20%;
 }
+
 .card {
     max-width: 350px;
 }
@@ -139,12 +156,12 @@ body {
 .card-img-top {
     min-height: 277px;
 }
+
 /* Footer styles
 -------------------------------------------------- */
-
 .footer {
-    position: relative;
-    bottom: 0;
+    position: absolute;
+    top: calc(100vh - 30px);
     width: 100%;
     text-align: center;
 }
@@ -157,8 +174,46 @@ body {
     color: #E35448;
 }
 
+/* Contacto - About
+--------------------------------------------------*/
+
+.about {
+    font-size: 30px;
+    color: rgb(107, 107, 107);
+    line-height: 2;
+    letter-spacing: 2px;
+    font-family: Roboto;
+    text-align: center;
+}
+
+.about img {
+    max-width: 300px;
+}
+
+.about span {
+    font-family: dense;
+    font-size: 50px;
+    letter-spacing: 7px;
+}
+
+.about p:nth-child(4) {
+    font-size: 20px;
+}
+
 /* Animations
 -------------------------------------------------- */
+
+@keyframes float {
+    0% {
+        transform: translatey(0px);
+    }
+    50% {
+        transform: translatey(-7px);
+    }
+    100% {
+        transform: translatey(0px);
+    }
+}
 
 .fadeIn {
     animation: fadeIn 1.5s;
@@ -175,6 +230,7 @@ body {
 
 /*Media Queries
 ----------------------------------------------------*/
+
 @media only screen and (max-width: 720px) {
     .logo-home {
         display: none;
@@ -183,7 +239,3 @@ body {
         min-height: auto;
     }
 }
-
-
-
-

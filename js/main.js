@@ -2,10 +2,20 @@
 var appLoader = document.querySelector('#dinamic-container');
 var formSearchDepto = document.querySelector('#search-depto');
 
+// Footer
+var footer = document.querySelector('.footer');
+
 // Home Nav
 var homeNav = document.querySelector('#home-nav');
 homeNav.addEventListener('click', () => {
     location.reload();
+});
+
+// Contacto
+var contacto = document.querySelector('#contacto');
+contacto.addEventListener('click', (event) => {
+    event.preventDefault();
+    getData(null, 'html/contacto.html', renderContacto);
 });
 
 // Search Bar
@@ -44,24 +54,24 @@ formSearchDepto.addEventListener('submit', (event) => {
     appLoader.innerHTML = '';
     appLoader.appendChild(getSpinner());
 
-    setTimeout(() => {
-        fetch(myRequest).then((data) => {
-            return data.text();
-        }).then((data) => {
+    fetch(myRequest).then((data) => {
+        return data.text();
+    }).then((data) => {
 
-            // Show Search Bar small
-            setSearchbarSmall();
-            // Render Data
-            appLoader.className += " fadeIn";
-            appLoader.innerHTML = data;
-        });
-    }, 1000);
+        // Show Search Bar small
+        setSearchbarSmall();
+
+        // Hide Footer
+        footer.style.display = 'none';
+        // Render Data
+        appLoader.className += " fadeIn";
+        appLoader.innerHTML = data;
+    });
 
 });
 
 function getData(param, action, renderFunction = null, api = false) {
-    event.preventDefault();
-
+ 
     let headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
@@ -75,35 +85,34 @@ function getData(param, action, renderFunction = null, api = false) {
     // By Default
     let endpoint = action + '&id_depto=' + param;
 
-    if(api) {
+    if (api) {
         endpoint = 'api/' + param;
     }
+    else if(param === null) {
+        endpoint= action;
+    }
+    
     let myRequest = new Request(endpoint, options);
 
-    setTimeout(() => {
-        fetch(myRequest).then((data) => {
-            if(api) {
-                return data.json();
-            }
-            else {
-                return data.text();
-            }
-        }).then((data) => {
+    fetch(myRequest).then((data) => {
+        if (api) {
+            return data.json();
+        }
+        else {
+            return data.text();
+        }
+    }).then((data) => {
 
-            // Render Data
-            if (!renderFunction) {
-                appLoader.innerHTML = data;
-            }
-            else {
-                renderFunction(data);
-            }
+        // Render Data
+        if (!renderFunction) {
+            appLoader.innerHTML = data;
+        }
+        else {
+            renderFunction(data);
+        }
 
-            if (!vanillaCalendar) {
-                createCalendar();
-            }
+    });
 
-        });
-    }, 1000);
 }
 
 /**
@@ -147,10 +156,10 @@ function updateReservasCalendar(reservas) {
     vanillaCalendar.createMonth();
 
     if (reservas && reservas.length > 0) {
-        for (let index = 0; index < vanillaCalendar.month.children.length; index++) {            
+        for (let index = 0; index < vanillaCalendar.month.children.length; index++) {
             // Get Day from the Calendar and set Hours to Midnight
             calendarDate = new Date(vanillaCalendar.month.children[index].getAttribute('data-calendar-date'));
-            calendarDate.setHours(0,0,0,0);
+            calendarDate.setHours(0, 0, 0, 0);
 
             for (let i = 0; i < reservas.length; i++) {
                 // Parse Dates
@@ -160,14 +169,24 @@ function updateReservasCalendar(reservas) {
                 var hasta = new Date(h[0], h[1] - 1, h[2]);
 
                 // Apply Style to Calendar
-                if ( calendarDate >= desde && calendarDate <= hasta ) {
+                if (calendarDate >= desde && calendarDate <= hasta) {
                     vanillaCalendar.month.children[index].className += ' day-reserved';
                 }
-                
+
             }
         }
     }
 
+}
+
+/**
+ * Render Depto
+ * @param {*} data 
+ */
+function renderDepto(data) {
+    appLoader.innerHTML = data;
+    createCalendar();
+    getCurrentDate();
 }
 
 /**
@@ -180,19 +199,26 @@ function getDepto(param, action) {
     // Save Current Depto 
     deptoID = param;
 
-    getData(param, action);
+    getData(param, action, renderDepto);
+}
+
+function renderContacto(data) {
+    document.querySelector('.container-fluid').innerHTML = data;
 }
 
 /**
  * Set Search Bar small
  */
 function setSearchbarSmall() {
+    
     searchBar.className += ' search-bar-small';
     // Logo 
     searchBar.children[0].className = 'col-3 logo-home logo-home-small';
+    // Title
+    searchBar.children[1].style.display = 'none';
     // Form
-    searchBar.children[1].className = 'col-5 form-search-depto form-search-depto-small';
-    searchBar.children[1].children[0].children[1].className = 'col-6 mb-2';
+    searchBar.children[2].className = 'col-5 form-search-depto form-search-depto-small';
+    searchBar.children[2].children[0].children[1].className = 'col-6 mb-2';
 }
 
 /**
