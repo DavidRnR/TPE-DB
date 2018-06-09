@@ -198,36 +198,27 @@ INSERT INTO GR08_Comentario (tipo_doc,nro_doc,id_reserva,fecha_hora_comentario,c
 -- es decir que si el tipo de departamento es de 2 habitaciones, 
 -- en el detalle se consideren como máximo 2 habitaciones.
 
-/*
-CREATE ASSERTION CK_GR08_CANTIDAD_HABITACIONES
-CHECK NOT EXISTS
-(SELECT 1
-    FROM GR08_Departamento d
-    JOIN GR08_Tipo_Dpto t ON (d.id_tipo_depto = t.id_tipo_depto)
-    WHERE t.cant_habitaciones > 
-        (SELECT COUNT(*)
-         FROM GR08_Habitacion h WHERE d.id_dpto = h.id_dpt);
-*/
-
-CREATE OR REPLACE FUNCTION TRFN_GR08_CK_CANTIDAD_HABITACIONES() RETURNS trigger
-AS $$
+CREATE OR REPLACE FUNCTION TRFN_GR08_CK_CANTIDAD_HABITACIONES () 
+RETURNS TRIGGER AS $$
+DECLARE
+    CANT INTEGER;
 BEGIN
-    IF(EXISTS 
-    (SELECT 1
-    FROM GR08_Departamento d
-    JOIN GR08_Tipo_Dpto t ON (d.id_tipo_depto = t.id_tipo_depto)
-    WHERE t.cant_habitaciones = 
-        (SELECT COUNT(*)
-         FROM GR08_Habitacion h WHERE d.id_dpto = h.id_dpto
-    ))) THEN
+    SELECT COUNT(*) INTO CANT FROM GR08_Habitacion
+    WHERE id_dpto = NEW.id_dpto;
+    IF CANT > (SELECT t.cant_habitaciones
+    FROM GR08_Tipo_Dpto t
+    JOIN GR08_Departamento d ON (d.id_tipo_depto = t.id_tipo_depto)
+    WHERE d.id_dpto = NEW.id_dpto)
+    THEN 
     RAISE EXCEPTION 'Departamento con cantidad de habitaciones inconrrectas';
-END IF;
-RETURN new;
-END; $$ LANGUAGE plpgsql;
+    END IF;
+RETURN NEW;
+END; $$
+LANGUAGE plpgsql;
 
 
 CREATE TRIGGER TR_GR08_CK_CANTIDAD_HABITACIONES 
-  BEFORE INSERT OR DELETE ON GR08_Habitacion FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_CANTIDAD_HABITACIONES();
+  AFTER INSERT ON GR08_Habitacion FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_CANTIDAD_HABITACIONES();
 
 
 
@@ -330,12 +321,12 @@ $$ LANGUAGE plpgsql;
 
 
 -- Dado un DeptoID y un Mes (Fecha Desde y Hasta), Devolver todos los días del mes que están disponibles
-CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,_fecha_desde date, _fecha_hasta date) 
- RETURNS TABLE (fecha date)AS $$
-BEGIN
+-- CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,_fecha_desde date, _fecha_hasta date) 
+--  RETURNS TABLE (fecha date)AS $$
+-- BEGIN
    
-END;
-$$ LANGUAGE plpgsql;
+-- END;
+-- $$ LANGUAGE plpgsql;
 
 -- ****************************************************************************************
 -- ****************************************************************************************
