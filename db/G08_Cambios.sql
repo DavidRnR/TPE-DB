@@ -320,13 +320,19 @@ END;
 $$ LANGUAGE plpgsql;
 
 
--- Dado un DeptoID y un Mes (Fecha Desde y Hasta), Devolver todos los días del mes que están disponibles
--- CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,_fecha_desde date, _fecha_hasta date) 
---  RETURNS TABLE (fecha date)AS $$
--- BEGIN
-   
--- END;
--- $$ LANGUAGE plpgsql;
+-- Dado un Depto, un Mes y un Año, devolver todas las Reservas que están disponibles
+ CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,month int, year int) 
+  RETURNS TABLE (id_reserva int,fecha_desde date,fecha_hasta date) AS $$
+ BEGIN
+   RETURN QUERY
+   SELECT r.id_reserva,r.fecha_desde,r.fecha_hasta FROM GR08_Reserva r WHERE r.id_dpto = _id_dpto 
+                                        AND (extract(month from r.fecha_desde) = month 
+                                        OR extract(month from r.fecha_hasta) = month) 
+                                        AND (extract(year from r.fecha_desde) = year 
+                                        OR extract(year from r.fecha_hasta) = year);
+    
+ END;
+ $$ LANGUAGE plpgsql;
 
 -- ****************************************************************************************
 -- ****************************************************************************************
