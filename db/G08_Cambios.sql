@@ -351,7 +351,7 @@ CREATE VIEW GR08_RECAUDACION_ULTIMOS_6_MESES AS (
 );
 
 --Devuelva un listado con los departamentos ordenados por ciudad y por mejor rating (estrellas)
-CREATE VIEW GR08_Departamentos_OrderBy_Ciudad_Rating AS (
+CREATE VIEW GR08_DEPARTAMENTOS_ORDERBY_CIUDAD_RATING AS (
     SELECT d.*,i.path, c.ciudad, AVG(Cast(co.estrellas as Float)) as rating FROM GR08_Departamento d
         JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal)
         FULL JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto)

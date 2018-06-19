@@ -21,7 +21,7 @@ class DepartamentosModel extends Model {
      * Get All Departamentos
      */
     function getDepartamentos() {
-        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamentos_OrderBy_Ciudad_Rating");
+        $departamentos = $this->db->prepare("SELECT * FROM GR08_DEPARTAMENTOS_ORDERBY_CIUDAD_RATING");
         $departamentos->execute();
         return $departamentos->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -30,7 +30,7 @@ class DepartamentosModel extends Model {
      * Get All Departamentos by Ciudad
      */
     function getDepartamentosByCiudad($ciudad) {
-        $departamentos = $this->db->prepare("SELECT * FROM GR08_Departamentos_OrderBy_Ciudad_Rating
+        $departamentos = $this->db->prepare("SELECT * FROM GR08_DEPARTAMENTOS_ORDERBY_CIUDAD_RATING
                                                       WHERE cod_postal = $ciudad");
         $departamentos->execute();
         return $departamentos->fetchAll(PDO::FETCH_ASSOC);
@@ -40,7 +40,7 @@ class DepartamentosModel extends Model {
      * Get Departamento by ID
      */
     function getDepartamentoById($deptoID) {
-        $departamento = $this->db->prepare("SELECT * FROM GR08_Departamentos_OrderBy_Ciudad_Rating
+        $departamento = $this->db->prepare("SELECT * FROM GR08_DEPARTAMENTOS_ORDERBY_CIUDAD_RATING
                                                      WHERE id_dpto = $deptoID");
         $departamento->execute();
         return $departamento->fetch(PDO::FETCH_ASSOC);
