@@ -21,8 +21,8 @@ class DepartamentosController {
         // All Ciudades by Default
         $ciudad = null;
 
-        if (isset($_POST['ciudad'])) {
-            $ciudad = $_POST['ciudad'];
+        if (isset($_GET['ciudad'])) {
+            $ciudad = $_GET['ciudad'];
         }
 
         if ($ciudad) {

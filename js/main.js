@@ -37,18 +37,16 @@ formSearchDepto.addEventListener('submit', (event) => {
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
 
-    // Build Body Data
-    let formData = new FormData();
-    formData.append('ciudad', event.target["ciudad"].value);
-
     let options = {
-        method: 'POST',
         headers: headers,
-        body: formData,
         mode: 'no-cors',
         cache: 'default'
     };
-    let myRequest = new Request('getDepartamentos', options);
+
+    // By Default
+    let endpoint = 'getDepartamentos&ciudad=' + event.target["ciudad"].value;
+
+    let myRequest = new Request(endpoint, options);
 
     // Show Spinner
     appLoader.innerHTML = '';
@@ -66,12 +64,13 @@ formSearchDepto.addEventListener('submit', (event) => {
         // Render Data
         appLoader.className += " fadeIn";
         appLoader.innerHTML = data;
+        setRating();
     });
 
 });
 
 function getData(param, action, renderFunction = null, api = false) {
- 
+
     let headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
@@ -88,10 +87,10 @@ function getData(param, action, renderFunction = null, api = false) {
     if (api) {
         endpoint = 'api/' + param;
     }
-    else if(param === null) {
-        endpoint= action;
+    else if (param === null) {
+        endpoint = action;
     }
-    
+
     let myRequest = new Request(endpoint, options);
 
     fetch(myRequest).then((data) => {
@@ -187,6 +186,7 @@ function renderDepto(data) {
     appLoader.innerHTML = data;
     createCalendar();
     getCurrentDate();
+    setRating();
 }
 
 /**
@@ -210,7 +210,7 @@ function renderContacto(data) {
  * Set Search Bar small
  */
 function setSearchbarSmall() {
-    
+
     searchBar.className += ' search-bar-small';
     // Logo 
     searchBar.children[0].className = 'col-3 logo-home logo-home-small';
@@ -232,4 +232,45 @@ function getSpinner(customClass = null) {
     containerSpinner.appendChild(loadingSpinner);
 
     return containerSpinner;
+}
+
+/**
+ * Set Rating - Stars
+ */
+function setRating() {
+    let fieldsRating = document.querySelectorAll('.rating');
+
+    // Build Rating for each Departamento
+    fieldsRating.forEach(element => {
+        let rating = element.getAttribute('data-rating');
+
+        let n = Math.floor(rating);
+        let nAux = rating % 1;
+        for (let index = 0; index < n; index++) {
+            let star = document.createElement('i');
+            star.className = 'fas fa-star fa-fw';
+            element.appendChild(star);
+        }
+        // Half Star
+        if (nAux && nAux > 0) {
+            let halfStar = document.createElement('i');
+            halfStar.className = 'fa fa-star-half';
+            element.appendChild(halfStar);
+
+            // Complete Rating Until 5 Stars
+            for (let index = 0; index < 4 - n; index++) {
+                let star = document.createElement('i');
+                star.className = 'far fa-star fa-fw';
+                element.appendChild(star);
+            }
+        }
+        else {
+            for (let index = 0; index < 5 - n; index++) {
+                let star = document.createElement('i');
+                star.className = 'far fa-star fa-fw';
+                element.appendChild(star);
+            }
+        }
+
+    });
 }

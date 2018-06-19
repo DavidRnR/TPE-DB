@@ -1,20 +1,25 @@
 <div class="row">
-    <div class="col-5">
+	<div class="col-5">
 
-        <div class="card" style="max-width: 100%;">
-            <img class="card-img-top" src="{$departamento.path}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Departamento</h5>
-                <p class="card-text">{$departamento.descripcion}</p>
-                <p class="card-text">Superficie: {$departamento.superficie}m
-                    <sup>2</sup>
-                </p>
-                <p class="card-text">Ubicación: {$departamento.ciudad}</p>
-            </div>
-        </div>
+		<div class="card" style="max-width: 100%;">
+			<img class="card-img-top" src="{$departamento.path}" alt="Card image cap">
+			<div class="card-body">
+				<div class="departamento-header">
+					<h5 class="card-title">Departamento</h5>
+					<fieldset class="col-12 rating" data-rating="{$departamento.rating}">
+						<!-- Rating made it by JS -->
+					</fieldset>
+				</div>
+				<p class="card-text">{$departamento.descripcion}</p>
+				<p class="card-text">Superficie: {$departamento.superficie}m
+					<sup>2</sup>
+				</p>
+				<p class="card-text">Ubicación: {$departamento.ciudad}</p>
+			</div>
+		</div>
 
-    </div>
-    <div class="row col-7 d-flex justify-content-center align-self-center">
+	</div>
+	<div class="row col-7 d-flex justify-content-center align-self-center">
 		<div class="col-8" id="v-cal">
 			<div class="vcal-header">
 				<button class="vcal-btn" data-calendar-toggle="previous">
@@ -46,7 +51,8 @@
 			<div class="vcal-body" data-calendar-area="month"></div>
 		</div>
 		<div class="row col-8 legend-months">
-			<p><i class="fas fa-square fa-fw"></i>Reservado</p>
+			<p>
+				<i class="fas fa-square fa-fw"></i>Reservado</p>
 		</div>
-    </div>
+	</div>
 </div>

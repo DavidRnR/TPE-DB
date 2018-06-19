@@ -14,7 +14,7 @@ CREATE TABLE GR08_Ciudad (
     CONSTRAINT PK_GR08_Ciudad PRIMARY KEY (cod_postal)
 );
 
--- Table: GR08_Ciudad
+-- Table: GR08_Imagen_Depto
 CREATE TABLE GR08_Imagen_Depto (
     id_imagen int NOT NULL,
     path varchar(200) NOT NULL,
@@ -118,6 +118,7 @@ INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (4,'img/departamentos/dept
 INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (5,'img/departamentos/depto-id5.jpg');
 INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (6,'img/departamentos/depto-id6.jpg');
 INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (7,'img/departamentos/depto-id7.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (8,'img/departamentos/depto-id8.jpg');
 
 -- Habitación
 INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,1,2,1,0,true,0,false,true,3,true);
@@ -321,9 +322,9 @@ $$ LANGUAGE plpgsql;
 
 
 -- Dado un Depto, un Mes y un Año, devolver todas las Reservas que están disponibles
- CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,month int, year int) 
-  RETURNS TABLE (id_reserva int,fecha_desde date,fecha_hasta date) AS $$
- BEGIN
+CREATE OR REPLACE FUNCTION TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES (_id_dpto int,month int, year int) 
+RETURNS TABLE (id_reserva int,fecha_desde date,fecha_hasta date) AS $$
+BEGIN
    RETURN QUERY
    SELECT r.id_reserva,r.fecha_desde,r.fecha_hasta FROM GR08_Reserva r WHERE r.id_dpto = _id_dpto 
                                         AND (extract(month from r.fecha_desde) = month 
@@ -331,8 +332,8 @@ $$ LANGUAGE plpgsql;
                                         AND (extract(year from r.fecha_desde) = year 
                                         OR extract(year from r.fecha_hasta) = year);
     
- END;
- $$ LANGUAGE plpgsql;
+END;
+$$ LANGUAGE plpgsql;
 
 -- ****************************************************************************************
 -- ****************************************************************************************
@@ -341,11 +342,21 @@ $$ LANGUAGE plpgsql;
 
 -- Devuelva un listado de todos los departamentos del sistema 
 -- junto con la recaudación de los mismos en los últimos 6 meses.
-
 CREATE VIEW GR08_RECAUDACION_ULTIMOS_6_MESES AS (
     SELECT d.*, SUM(p.importe) as total FROM GR08_Departamento d
-    JOIN GR08_Reserva r ON (r.id_dpto = d.id_dpto)
-    JOIN GR08_Pago p ON (p.id_reserva = r.id_reserva)
+        JOIN GR08_Reserva r ON (r.id_dpto = d.id_dpto)
+        JOIN GR08_Pago p ON (p.id_reserva = r.id_reserva)
     WHERE p.fecha_pago <= NOW() AND p.fecha_pago > NOW() - interval '6 month'
     GROUP BY 1,2
+);
+
+--Devuelva un listado con los departamentos ordenados por ciudad y por mejor rating (estrellas)
+CREATE VIEW GR08_Departamentos_OrderBy_Ciudad_Rating AS (
+    SELECT d.*,i.path, c.ciudad, AVG(Cast(co.estrellas as Float)) as rating FROM GR08_Departamento d
+        JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal)
+        FULL JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto)
+        FULL JOIN GR08_Reserva r ON (r.id_dpto = d.id_dpto)
+        FULL JOIN GR08_Comentario co ON (co.id_reserva = r.id_reserva AND co.nro_doc = r.nro_doc AND co.tipo_doc = r.tipo_doc)
+    GROUP BY d.id_dpto, i.path, c.ciudad
+    ORDER BY c.ciudad, rating DESC
 );

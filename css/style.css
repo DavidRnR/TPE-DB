@@ -159,6 +159,7 @@ body {
 
 /* Footer styles
 -------------------------------------------------- */
+
 .footer {
     position: absolute;
     top: calc(100vh - 30px);
@@ -198,6 +199,16 @@ body {
 
 .about p:nth-child(4) {
     font-size: 20px;
+}
+
+/****** Style Star Rating *****/
+.departamento-header {
+    display: inline-flex;
+}
+
+.rating {
+    color: #FFED85;
+    font-size: 18px;
 }
 
 /* Animations
