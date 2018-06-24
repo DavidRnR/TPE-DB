@@ -196,11 +196,15 @@ INSERT INTO GR08_Comentario (tipo_doc,nro_doc,id_reserva,fecha_hora_comentario,c
  ALTER TABLE GR08_Reserva
      ADD CONSTRAINT CK_GR08_ReservaFechas CHECK (fecha_desde < fecha_hasta);
 
+-- Ejemplos
+-- INSERT INTO GR08_Reserva (id_reserva,fecha_reserva,fecha_desde,fecha_hasta,tipo,id_dpto,valor_noche,limpieza,tipo_doc,nro_doc) VALUES (9,to_date('22/12/2017','dd/MM/yyyy'),to_date('24/05/2018','dd/MM/yyyy'),to_date('02/05/2018','dd/MM/yyyy'),'Internet',1,430,false,1,28499199);
+-- UPDATE GR08_Reserva SET fecha_hasta = to_date('23/12/2017','dd/MM/yyyy') WHERE id_reserva = 1;
+
+
 
 -- Que el detalle de las habitaciones sea consistente con el tipo de departamento, 
 -- es decir que si el tipo de departamento es de 2 habitaciones, 
 -- en el detalle se consideren como máximo 2 habitaciones.
-
 CREATE OR REPLACE FUNCTION TRFN_GR08_CK_CANTIDAD_HABITACIONES () 
 RETURNS TRIGGER AS $$
 DECLARE
@@ -223,11 +227,14 @@ LANGUAGE plpgsql;
 CREATE TRIGGER TR_GR08_CK_CANTIDAD_HABITACIONES 
   AFTER INSERT ON GR08_Habitacion FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_CANTIDAD_HABITACIONES();
 
+-- Ejemplo - Departamento 1 es de Tipo 1: Tiene 1 Habitación. Intentemos agregarle una.
+--INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,2,2,1,0,true,0,false,true,3,true);
+
+
 
 
 -- Que tanto la persona que realiza la reserva 
 -- como los huéspedes no sea el propietario del departamento.
-
 CREATE OR REPLACE FUNCTION TRFN_GR08_CK_RESERVA () RETURNS trigger
 AS $$
 BEGIN
@@ -243,27 +250,47 @@ END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER TR_GR08_CK_RESERVA  
  	 AFTER INSERT OR UPDATE ON GR08_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_RESERVA();
 
+-- Ejemplo. Hagamos una Reserva al Departamento 1 con los datos del Propietario. 
+-- Y luego Actualicemos una Reserva exitente con los datos del Porpietario.
+-- Insertemos el Propietario del Departamento 1 como huesped
+-- INSERT INTO GR08_Huesped (tipo_doc,nro_doc) VALUES (1,31156181);
+-- Luego intentamos hacer una Reserva con sus datos.
+-- INSERT INTO GR08_Reserva (id_reserva,fecha_reserva,fecha_desde,fecha_hasta,tipo,id_dpto,valor_noche,limpieza,tipo_doc,nro_doc) VALUES (9,to_date('22/12/2017','dd/MM/yyyy'),to_date('24/12/2017','dd/MM/yyyy'),to_date('02/01/2018','dd/MM/yyyy'),'Internet',1,430,false,1,31156181);
+-- O probemos actualizar la Reserva 1 con el Documento del Propietario de dicho Departamento
+-- UPDATE GR08_Reserva SET nro_doc = 31156181 WHERE id_reserva = 1;
+
+
 
 -- Que la cantidad de huéspedes no supere 
 -- la cantidad máxima de personas permitidas para una reserva.
-
 CREATE OR REPLACE FUNCTION TRFN_GR08_CK_MAX_HUESPEDES () RETURNS trigger
 AS $$
+DECLARE
+    CANT INTEGER;
 BEGIN
-    IF(EXISTS (
-       SELECT 1 FROM GR08_Tipo_Depto t 
-        JOIN GR08_Departamento d ON (t.tipo_dpto = d.id_tipo_dpto)
-        WHERE t.cant_max_huespedes > (
-            SELECT COUNT(*) 
-            FROM GR08_Huesped_Reserva hr WHERE hr.tipo_doc = NEW.tipo_doc AND hr.nro_doc = NEW.nro_doc
-    ))) THEN
-    RAISE EXCEPTION 'Departamento ocupado';
-END IF;
+    SELECT COUNT(*) INTO CANT
+            FROM GR08_Huesped_Reserva hr
+            WHERE NEW.id_reserva = hr.id_reserva;
+    IF CANT > ( SELECT t.cant_max_huespedes FROM GR08_Tipo_Dpto t
+                JOIN GR08_Departamento d ON (d.id_tipo_depto = t.id_tipo_depto)
+                JOIN GR08_Reserva r ON (d.id_dpto = r.id_dpto)
+                WHERE r.id_reserva = NEW.id_reserva
+    )
+    THEN
+    RAISE EXCEPTION 'La Reserva supera la cantidad Máxima de Huespedes del Departamento';
+    END IF;
 RETURN NEW;
 END; $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER TR_GR08_CK_MAX_HUESPEDES 
- 	 AFTER INSERT ON GR08_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_MAX_HUESPEDES();
+ 	 AFTER INSERT ON GR08_Huesped_Reserva FOR EACH ROW EXECUTE PROCEDURE TRFN_GR08_CK_MAX_HUESPEDES();
+-- Ejemplo al Departamento 1 que es de Tipo 1 (Max Huesped = 2)
+-- Insertamos otro Huesped a la Reserva 1 sin errores. Ahora tenemos el departamento con 2.
+-- INSERT INTO GR08_Huesped_Reserva (tipo_doc,nro_doc,id_reserva) VALUES (1,28856188,1);
+
+-- Intentamos otro Huesped a la Reserva 1. Obtenemos error de Cantidad Máxima de Huespedes
+-- INSERT INTO GR08_Huesped_Reserva (tipo_doc,nro_doc,id_reserva) VALUES (1,26886654,1);
+
 
 -- ****************************************************************************************
 -- ****************************************************************************************
