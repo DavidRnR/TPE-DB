@@ -18,6 +18,7 @@ CREATE TABLE GR08_Ciudad (
 CREATE TABLE GR08_Imagen_Depto (
     id_imagen int NOT NULL,
     path varchar(200) NOT NULL,
+    id_dpto int NOT NULL,
     CONSTRAINT PK_GR08_Imagen_Depto PRIMARY KEY (id_imagen)
 );
 
@@ -39,7 +40,7 @@ ALTER TABLE GR08_Departamento
 -- FK_GR08_Imagen
 ALTER TABLE GR08_Imagen_Depto 
      ADD CONSTRAINT FK_GR08_Imagen_Departamento
-     FOREIGN KEY (id_imagen)
+     FOREIGN KEY (id_dpto)
      REFERENCES GR08_Departamento (id_dpto);  
 
 --***********************************************************************************************************
@@ -111,14 +112,14 @@ INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUE
 INSERT INTO GR08_CostoDepto (id_dpto,fecha_desde,fecha_hasta,precio_noche) VALUES (8,to_date('02/03/2018','dd/MM/yyyy'),to_date('19/12/2018','dd/MM/yyyy'),920);
 
 -- Imagenes Deptos
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (1,'img/departamentos/depto-id1.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (2,'img/departamentos/depto-id2.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (3,'img/departamentos/depto-id3.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (4,'img/departamentos/depto-id4.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (5,'img/departamentos/depto-id5.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (6,'img/departamentos/depto-id6.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (7,'img/departamentos/depto-id7.jpg');
-INSERT INTO GR08_Imagen_Depto (id_imagen,path) VALUES (8,'img/departamentos/depto-id8.jpg');
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (1,'img/departamentos/depto-id1.jpg',1);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (2,'img/departamentos/depto-id2.jpg',2);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (3,'img/departamentos/depto-id3.jpg',3);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (4,'img/departamentos/depto-id4.jpg',4);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (5,'img/departamentos/depto-id5.jpg',5);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (6,'img/departamentos/depto-id6.jpg',6);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (7,'img/departamentos/depto-id7.jpg',7);
+INSERT INTO GR08_Imagen_Depto (id_imagen,path,id_dpto) VALUES (8,'img/departamentos/depto-id8.jpg',8);
 
 -- Habitación
 INSERT INTO GR08_Habitacion (id_dpto,id_habitacion,posib_camas_simples,posib_camas_dobles,posib_camas_kind,tv,sillon,frigobar,mesa,sillas,cocina) VALUES (1,1,2,1,0,true,0,false,true,3,true);
@@ -195,6 +196,7 @@ INSERT INTO GR08_Comentario (tipo_doc,nro_doc,id_reserva,fecha_hora_comentario,c
  ALTER TABLE GR08_Reserva
      ADD CONSTRAINT CK_GR08_ReservaFechas CHECK (fecha_desde < fecha_hasta);
 
+
 -- Que el detalle de las habitaciones sea consistente con el tipo de departamento, 
 -- es decir que si el tipo de departamento es de 2 habitaciones, 
 -- en el detalle se consideren como máximo 2 habitaciones.
@@ -205,13 +207,13 @@ DECLARE
     CANT INTEGER;
 BEGIN
     SELECT COUNT(*) INTO CANT FROM GR08_Habitacion
-    WHERE id_dpto = NEW.id_dpto;
+           WHERE id_dpto = NEW.id_dpto;
     IF CANT > (SELECT t.cant_habitaciones
-    FROM GR08_Tipo_Dpto t
-    JOIN GR08_Departamento d ON (d.id_tipo_depto = t.id_tipo_depto)
-    WHERE d.id_dpto = NEW.id_dpto)
+               FROM GR08_Tipo_Dpto t
+               JOIN GR08_Departamento d ON (d.id_tipo_depto = t.id_tipo_depto)
+               WHERE d.id_dpto = NEW.id_dpto)
     THEN 
-    RAISE EXCEPTION 'Departamento con cantidad de habitaciones inconrrectas';
+    RAISE EXCEPTION 'Departamento con cantidad de habitaciones incorrectas';
     END IF;
 RETURN NEW;
 END; $$
@@ -225,14 +227,6 @@ CREATE TRIGGER TR_GR08_CK_CANTIDAD_HABITACIONES
 
 -- Que tanto la persona que realiza la reserva 
 -- como los huéspedes no sea el propietario del departamento.
-
-/*
-CREATE ASSERTION CK_GR08_PROPIETARIO
-    CHECK NOT EXISTS (
-        SELECT 1 FROM GR08_Departamento d
-        JOIN GR08_Reserva r ON (d.tipo_doc = r.tipo_doc AND d.nro_doc = r.nro_doc);
-);
-*/
 
 CREATE OR REPLACE FUNCTION TRFN_GR08_CK_RESERVA () RETURNS trigger
 AS $$
@@ -252,18 +246,6 @@ CREATE TRIGGER TR_GR08_CK_RESERVA
 
 -- Que la cantidad de huéspedes no supere 
 -- la cantidad máxima de personas permitidas para una reserva.
-
-/*
-CREATE ASSERTION CK_GR08_MAX_HUESPEDES
-    CHECK NOT EXISTS (
-        SELECT 1 FROM GR08_Tipo_Depto t 
-        JOIN GR08_Departamento d ON (t.tipo_dpto = d.id_tipo_dpto)
-        WHERE t.cant_max_huespedes > (
-            SELECT COUNT(*) 
-            FROM GR08_Huesped_Reserva hr WHERE hr.tipo_doc = NEW.tipo_doc AND hr.nro_doc = NEW.nro_doc
-        );
-);
-*/
 
 CREATE OR REPLACE FUNCTION TRFN_GR08_CK_MAX_HUESPEDES () RETURNS trigger
 AS $$
@@ -352,11 +334,10 @@ CREATE VIEW GR08_RECAUDACION_ULTIMOS_6_MESES AS (
 
 --Devuelva un listado con los departamentos ordenados por ciudad y por mejor rating (estrellas)
 CREATE VIEW GR08_DEPARTAMENTOS_ORDERBY_CIUDAD_RATING AS (
-    SELECT d.*,i.path, c.ciudad, AVG(Cast(co.estrellas as Float)) as rating FROM GR08_Departamento d
+    SELECT d.*, c.ciudad, AVG(Cast(co.estrellas as Float)) as rating, (select array(SELECT im.path from GR08_imagen_depto im WHERE d.id_dpto = im.id_dpto)) as images FROM GR08_Departamento d
         JOIN GR08_Ciudad c ON (d.cod_postal = c.cod_postal)
-        FULL JOIN GR08_Imagen_Depto i ON (i.id_imagen = d.id_dpto)
         FULL JOIN GR08_Reserva r ON (r.id_dpto = d.id_dpto)
         FULL JOIN GR08_Comentario co ON (co.id_reserva = r.id_reserva AND co.nro_doc = r.nro_doc AND co.tipo_doc = r.tipo_doc)
-    GROUP BY d.id_dpto, i.path, c.ciudad
+    GROUP BY d.id_dpto, c.ciudad
     ORDER BY c.ciudad, rating DESC
 );

@@ -47,12 +47,13 @@ class DepartamentosModel extends Model {
     }
 
     /**
-     * Get Reserva by Depto ID and included in a Month
+     * Get Reservas by Depto ID and included in a Month
      */
     function getReservasByDeptoByMonth($deptoID, $month, $year) {
         $reservas = $this->db->prepare("SELECT * FROM TRFN_GR08_DEPARTAMENTO_FECHAS_DISPONIBLES($deptoID, $month, $year)");
         $reservas->execute();
         return $reservas->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }
 ?>

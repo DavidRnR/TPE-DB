@@ -2,7 +2,28 @@
 	<div class="col-5">
 
 		<div class="card" style="max-width: 100%;">
-			<img class="card-img-top" src="{$departamento.path}" alt="Card image cap">
+			<div id="carousel-depto-{$departamento.id_dpto}" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					{foreach from=$departamento.images key=ind item=imageDepto} {if $ind == 0}
+					<div class="carousel-item active">
+						<img class="d-block w-100" src="{$imageDepto}" alt="Departamento Image">
+					</div>
+					{else}
+					<div class="carousel-item">
+						<img class="d-block w-100" src="{$imageDepto}" alt="Departamento Image">
+					</div>
+					{/if} {/foreach}
+				</div>
+				<a class="carousel-control-prev" href="#carousel-depto-{$departamento.id_dpto}" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#carousel-depto-{$departamento.id_dpto}" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+
 			<div class="card-body">
 				<div class="departamento-header">
 					<h5 class="card-title">Departamento</h5>
@@ -19,6 +40,7 @@
 		</div>
 
 	</div>
+	
 	<div class="row col-7 d-flex justify-content-center align-self-center">
 		<div class="col-8" id="v-cal">
 			<div class="vcal-header">

@@ -4,7 +4,29 @@
         <div class="card-columns">
             {foreach from=$departamentos key=index item=depto}
             <div class="card mb-4">
-                <img class="card-img-top" src="{$depto.path}" alt="Card image cap">
+                <div id="carousel-depto-{$depto.id_dpto}" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {foreach from=$depto.images key=ind item=imageDepto} 
+                        {if $ind == 0}
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="{$imageDepto}" alt="Departamento Image">
+                        </div>
+                        {else}
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="{$imageDepto}" alt="Departamento Image">
+                        </div>
+                        {/if} 
+                        {/foreach}
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel-depto-{$depto.id_dpto}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-depto-{$depto.id_dpto}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
                 <div class="card-body">
                     <div class="departamento-header">
                         <h5 class="card-title">Departamento</h5>
